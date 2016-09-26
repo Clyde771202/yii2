@@ -308,7 +308,7 @@ class RbacController extends Controller
 
 Después de ejecutar el comando `yii rbac/init`, obtendremos la siguiente jerarquía:
 
-![Simple RBAC hierarchy](../guide/images/rbac-hierarchy-1.png "Simple RBAC hierarchy")
+![Simple RBAC hierarchy](images/rbac-hierarchy-1.png "Simple RBAC hierarchy")
 
 "Author" puede crear un post, "admin" puede actualizar posts y hacer todo lo que puede hacer "author".
 
@@ -399,7 +399,7 @@ $auth->addChild($author, $updateOwnPost);
 
 Ahora tenemos la siguiente jerarquía:
 
-![RBAC hierarchy with a rule](../guide/images/rbac-hierarchy-2.png "RBAC hierarchy with a rule")
+![RBAC hierarchy with a rule](images/rbac-hierarchy-2.png "RBAC hierarchy with a rule")
 
 
 ### Comprobación de Acceso <span id="access-check"></span>
@@ -416,7 +416,7 @@ if (\Yii::$app->user->can('createPost')) {
 
 Si el usuario actual es Jane con `ID=1`, comenzamos desde `createPost` y tratamos de alcanzar a `Jane`:
 
-![Access check](../guide/images/rbac-access-check-1.png "Access check")
+![Access check](images/rbac-access-check-1.png "Access check")
 
 Con el fin de comprobar si un usuario puede actualizar un post, necesitamos pasarle un parámetro adicional requerido por `AuthorRule`, descrito antes:
 
@@ -429,7 +429,7 @@ if (\Yii::$app->user->can('updatePost', ['post' => $post])) {
 Aquí es lo que sucede si el usuario actual es John:
 
 
-![Access check](../guide/images/rbac-access-check-2.png "Access check")
+![Access check](images/rbac-access-check-2.png "Access check")
 
 Comenzamos desde `updatePost` y pasamos por `updateOwnPost`. Con el fin de pasar la comprobación de acceso, `AuthorRule`
 debe devolver `true` desde su método `execute()`. El método recive `$params` desde la llamada al método `can()`, cuyo valor es
@@ -437,7 +437,7 @@ debe devolver `true` desde su método `execute()`. El método recive `$params` d
 
 En caso de Jane es un poco más simple, ya que ella es un "admin":
 
-![Access check](../guide/images/rbac-access-check-3.png "Access check")
+![Access check](images/rbac-access-check-3.png "Access check")
 
 
 ### Utilizar Roles por Defecto <span id="using-default-roles"></span>
@@ -503,7 +503,7 @@ $auth->addChild($admin, $author);
 
 Tenga en cuenta que en el ejemplo anterior, dado que "author" es agregado como hijo de "admin", cuando implementes el método `execute()`
 de la clase de la regla, necesitas respetar esta jerarquía. Esto se debe a que cuando el nombre del rol es "author",
-el método `execute()` devolverá true si el grupo de usuario es tanto 1 como 2 (lo que significa que el usuario se encuentra en
+el método `execute()` devolverá `true` si el grupo de usuario es tanto 1 como 2 (lo que significa que el usuario se encuentra en
 cualquiera de los dos grupos, "admin" o "author").
 
 Luego, configura `authManager` enumerando los dos roles en [[yii\rbac\BaseManager::$defaultRoles]]:
@@ -522,6 +522,6 @@ return [
 ```
 
 Ahora si realizas una comprobación de acceso, tanto el rol `admin` y como el rol `author` serán comprobados evaluando
-las reglas asociadas con ellos. Si la regla devuelve true, significa que la regla aplica al usuario actual.
+las reglas asociadas con ellos. Si la regla devuelve `true`, significa que la regla aplica al usuario actual.
 Basado en la implementación de la regla anterior, esto significa que si el valor `group` en un usuario es 1, el rol `admin`
 se aplicaría al usuario; y si el valor de `group` es 2, se le aplicaría el rol `author`.
